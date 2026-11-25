@@ -453,8 +453,8 @@
         position: fixed; inset: 0; z-index: 2147483600;
         display: flex; align-items: center; justify-content: center;
         padding: 24px; overflow: auto;
-        font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-        font-size: 14px; font-weight: 400; line-height: 1.5;
+        font-family: "PingFang SC", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+        font-size: 14px; font-weight: 500; line-height: 1.5;
         letter-spacing: normal; word-spacing: normal; text-align: left;
         text-transform: none; text-indent: 0; white-space: normal; direction: ltr;
         color: var(--lon-ink); -webkit-font-smoothing: antialiased;
@@ -533,7 +533,7 @@
         display: flex; align-items: center; gap: 11px; width: 100%;
         border: 1px solid var(--lon-line); border-radius: 13px; padding: 11px 13px;
         background: var(--lon-field); color: var(--lon-ink);
-        font-family: inherit; font-size: 13.5px; text-align: left; cursor: pointer;
+        font-family: inherit; font-weight: inherit; font-size: 13.5px; text-align: left; cursor: pointer;
         transition: background .15s, border-color .15s, box-shadow .15s, transform .12s;
       }
       .lon-folder:hover { background: var(--lon-soft); }
@@ -550,7 +550,7 @@
       .lon-new-input {
         width: 100%; border: 1px solid var(--lon-line); border-radius: 12px; padding: 11px 13px;
         background: var(--lon-field); color: var(--lon-ink);
-        font-family: inherit; font-size: 13px; outline: none;
+        font-family: inherit; font-weight: inherit; font-size: 13px; outline: none;
         transition: border-color .15s, box-shadow .15s;
       }
       .lon-new-input::placeholder { color: var(--lon-subtle); }

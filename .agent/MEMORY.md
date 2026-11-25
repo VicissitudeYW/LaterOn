@@ -2,7 +2,7 @@
 - [x] 完成 Agent-coding 规范接入：新增项目规则与任务记忆、验证并提交。
 - [x] Bug：在分组视图中，已分组网页卡片仍显示「等待整理」；应显示当前组别。
 - [x] 功能：从扩展点击添加或使用快捷键添加网页时，可在弹窗中选择目标组，默认「等待整理」，并沿用现有弹窗风格。
-- [ ] 样式：将扩展字体调整为 PingFang SC Medium 或更粗的字重，并验证无该字体时的回退表现。
+- [x] 样式：将扩展字体调整为 PingFang SC Medium 或更粗的字重，并验证无该字体时的回退表现。
 
 ---
 
@@ -13,4 +13,6 @@
 - 原始本地副本缺少测试目录；fork 有可直接运行的 `tests/*.test.js`，其中 DOM 检查依赖 jsdom。使用仓库外临时依赖，模拟 Chrome API 的 Node 检查不等于真实浏览器验收。
 - 原目录保留在 `C:\Users\ADMIN\Documents\Add-on\LaterOn`，其早期历史与 fork 无关联。已配置 origin 为 `https://github.com/VicissitudeYW/LaterOn.git`；继续开发使用基于 fork main 的隔离工作区 `C:\Users\ADMIN\.codex\worktrees\lateron-save-project-picker\LaterOn`、分支 `codex/single-save-project-picker`，已带入卡片组别修复与任务规范。
 - 单页添加默认复用现有浮层并传入空项目（等待整理）；仅 `askFolderOnSingle === false && askFolderOnSingleOptIn === true` 表示明确关闭。设置读取、监听与后台必须一致；整窗入口仍用上次项目，包括仅剩一个可添加网页时。
-- 2026-11-25：单页切片经历 RED→GREEN，完整 54 个 Node 测试脚本、9 项新增设置检查、manifest 与根目录 JS 检查通过，只读独立审查无阻断；未重载真实浏览器扩展，未做实际视觉验收。字体切片尚未实施。
+- 2026-11-25：单页切片经历 RED→GREEN，完整 54 个 Node 测试脚本、9 项新增设置检查、manifest 与根目录 JS 检查通过，只读独立审查无阻断；当时未重载真实浏览器扩展，未做实际视觉验收。
+- 2026-11-25：字体切片统一首选 PingFang SC、正文 500，保留更粗层级并补齐控件继承；网页内提示的字体应声明在 Shadow 内部 .box，不能只放在可被宿主 div 样式覆盖的 :host，resume 的 font 简写也不能把 inherit 混在具体值中。
+- 验证：54 个 Node 脚本、13 项隔离 Edge 渲染检查、manifest 7 个引用与 17 个根 JS 检查通过；实际平台字体为 PingFang SC Medium，模拟首选缺失后回退 Microsoft YaHei，中英文 320px 侧栏与长内容截图已检查，但仍未重载已安装扩展做端到端验收。panel-fast-open 的诊断用例改为有上限等待实际写入，避免两帧启动后固定 40ms 读记录的误报。

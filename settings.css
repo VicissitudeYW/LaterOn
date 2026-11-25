@@ -7,6 +7,7 @@ body {
   -webkit-font-smoothing: antialiased;
   font-family: inherit;
 }
+button, input, select, textarea { font-family: inherit; font-weight: inherit; }
 .settings-shell { max-width: 760px; margin: 0 auto; padding: 0 clamp(18px, 5vw, 40px) 80px; }
 /* 顶栏通栏铺满窗口（和全屏页同款玻璃条），内容再用内层容器对齐 760px 的正文列。
    之前整条栏被包在 760px 的壳里，宽窗口下两头像被截断的色块。 */

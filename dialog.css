@@ -119,6 +119,7 @@
   background: var(--lod-soft);
   color: var(--lod-ink);
   font-family: inherit;
+  font-weight: inherit;
   font-size: 13.5px;
   line-height: 1.62;
   outline: none;

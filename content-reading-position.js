@@ -123,11 +123,11 @@
     if (!iconUrl) return;
     shadow.innerHTML = `
       <style>
-        :host{all:initial;position:fixed;right:28px;top:50%;transform:translateY(-50%);z-index:2147483647;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-        .box{display:flex;align-items:center;gap:8px;padding:10px 12px 10px 10px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(24,23,21,.94);box-shadow:0 14px 38px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.06);color:#fff;backdrop-filter:blur(18px);animation:lateron-in .28s cubic-bezier(.22,1,.36,1) both}
+        :host{all:initial;position:fixed;right:28px;top:50%;transform:translateY(-50%);z-index:2147483647}
+        .box{font-family:"PingFang SC","Microsoft YaHei",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;font-weight:500;display:flex;align-items:center;gap:8px;padding:10px 12px 10px 10px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(24,23,21,.94);box-shadow:0 14px 38px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.06);color:#fff;backdrop-filter:blur(18px);animation:lateron-in .28s cubic-bezier(.22,1,.36,1) both}
         .mark{display:block;width:36px;height:36px;border-radius:50%;object-fit:cover;box-shadow:0 4px 10px rgba(0,0,0,.22)}
         button{all:unset;box-sizing:border-box;cursor:pointer}
-        .resume{padding:12px 20px;border-radius:999px;font:650 15px/1.2 inherit;letter-spacing:.01em;white-space:nowrap}
+        .resume{padding:12px 20px;border-radius:999px;font-family:inherit;font-weight:650;font-size:15px;line-height:1.2;letter-spacing:.01em;white-space:nowrap}
         .resume:hover{background:rgba(255,255,255,.11)}
         .close{display:grid;place-items:center;width:34px;height:34px;margin-left:2px;border-radius:50%;color:rgba(255,255,255,.58)}
         .close svg{display:block;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
