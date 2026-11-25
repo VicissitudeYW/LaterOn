@@ -67,7 +67,14 @@ async function main() {
       if (url.origin !== ORIGIN || !file.startsWith(ROOT + path.sep) || !fs.existsSync(file)) return route.abort();
       const ext = path.extname(file);
       if (ext === ".js") return route.fulfill({ contentType: "application/javascript", body: "" });
-      if (ext === ".html") return route.fulfill({ contentType: "text/html", body: fs.readFileSync(file, "utf8").replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "") });
+      if (ext === ".html") {
+        // Chromium's extension_fonts.css sets a family directly on body.
+        // A low-priority layer models that default without an installed extension:
+        // an explicit app body rule wins, but a root-only family cannot inherit.
+        const defaults = '<style>@layer extension-default-font { body { font-family: "Segoe UI", sans-serif; font-size: 12px; } }</style>';
+        const html = fs.readFileSync(file, "utf8").replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+        return route.fulfill({ contentType: "text/html", body: html.replace("</head>", `${defaults}</head>`) });
+      }
       return route.fulfill({ path: file });
     });
     const page = await context.newPage();
@@ -96,6 +103,40 @@ async function main() {
       if (name === "sidepanel") await page.setViewportSize({ width: 320, height: 850 });
       await screenshot(page, name, true);
       await page.setViewportSize({ width: 1280, height: 900 });
+    }
+
+    for (const theme of ["light", "dark"]) {
+      await page.goto(`${ORIGIN}/library.html?from=sidepanel&project=font-project&filter=all&focus=font-item`);
+      await page.evaluate((theme) => {
+        document.documentElement.dataset.theme = theme;
+        const store = {
+          laterOnItems: [{ id: "font-item", title: "中文字体 Medium English 123", description: "收藏库卡片正文应使用共享字体。", source: "example.com", favicon: "", image: "", status: "unread", projectId: "font-project", url: "https://example.com/article", savedAt: Date.now() }],
+          laterOnProjects: [{ id: "font-project", name: "字体检查项目" }],
+          laterOnCurrentItem: "font-item", laterOnSettings: { language: "zh-CN" }, laterOnCovers: {}
+        };
+        window.chrome = {
+          storage: { local: { get: async () => store, set: async (patch) => Object.assign(store, patch) }, onChanged: { addListener() {} } },
+          runtime: { getURL: (name) => new URL(name, location.href).href, sendMessage: async () => ({ ok: false }), onMessage: { addListener() {} } },
+          tabs: { query: async () => [{ id: 1, windowId: 7 }] }
+        };
+      }, theme);
+      await page.addScriptTag({ path: path.join(ROOT, "i18n.js") });
+      await page.addScriptTag({ path: path.join(ROOT, "library.js") });
+      const card = page.locator('#cardGrid .card[data-id="font-item"]');
+      await card.waitFor();
+      await check(`library ${theme} focused project overrides extension body font`, async () => {
+        const body = await medium(page.locator("body"));
+        assert.equal(body.size, "12px", "keep the browser's existing extension font size");
+        assert.equal(body.weight, 500);
+        for (const selector of ["h2", ".description", ".project-select", ".read-toggle"]) await medium(card.locator(selector));
+        await medium(page.locator('.project-nav[data-project="font-project"]'));
+        assert.equal(await card.locator(".project-select").inputValue(), "font-project");
+        assert.match(await card.getAttribute("class"), /\bis-current\b/);
+        const fonts = await platformFonts(page, '#cardGrid .card h2');
+        assert.ok(fonts.length > 0 && fonts.every((font) => font.glyphCount > 0), "the preferred or fallback font must render the title");
+        report.push({ scenario: `library-${theme}`, body, fonts });
+      });
+      await screenshot(page, `library-${theme}-focused`, true);
     }
 
     for (const language of ["zh-CN", "en"]) {

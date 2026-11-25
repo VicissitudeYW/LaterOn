@@ -11,6 +11,8 @@ body {
   background: var(--bg-grad);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
+  /* Extension defaults set a font directly on body; inherit our shared family. */
+  font-family: inherit;
 }
 button, input, select { font: inherit; }
 button, select { cursor: pointer; }
